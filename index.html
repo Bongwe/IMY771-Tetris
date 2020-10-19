@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WASM Tetris</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="style.css" rel="stylesheet" type="text/css" /> 
+</head>
+<body>
+    
+    <div class="parent-container">
+       
+      <button class="reset-btn" onclick="moveObject()">Move Object</button>
+      <h2 id="game-status" class="status"></h2>
+    
+    </div>
+      
+      <script>
+        let current='X'
+        var disableBoard = false;
+        var currentBoardValues = []
+        //var BoardValues = {0:new Array(10),1:new Array(10),2:Array(10),3:Array(10),4:Array(10),5:Array(10),6:Array(10),7:Array(10),8:Array(10),9:Array(10)};
+        var BoardValues = new Array(10);;
+        var movesPendingLabel = 'Moves still pending!';
+        var emptyBlock = '';
+        var objectBlock = "1";
+        var noWinnerLabel = 'Oops! Looks like no one won :(';
+        var gfg = Array(10);
+
+        
+        for (var i = 0; i < 10; i++) { 
+          BoardValues[i] = new Array(10);; 
+        }
+
+        for (var i = 0; i < 10; i++) { 
+          for (var j = 0; j < 10; j++) { 
+            BoardValues[i][j] = "0"; 
+          } 
+        }
+
+        var gamePiece = new Array(10);
+
+        for (var i = 0; i < gamePiece.length; i++) { 
+          gamePiece[i] = new Array(10);
+        }
+
+        for (var i = 0; i < 10; i++) { 
+          for (var j = 0; j < 10; j++) { 
+            gamePiece[i][j] = "0";
+          } 
+        } 
+        gamePiece[0][4] = '1';
+        gamePiece[1][3] = '1';
+        gamePiece[1][4] = '1';
+        gamePiece[1][5] = '1';
+
+        var xCount = 0 ;
+        var yCount = 0 ;
+
+        var Module = {
+          onRuntimeInitialized: function() {
+            Module.tetris();
+          }
+        };
+
+        function makeMove() {
+            if(!disableBoard) {
+                //event.target.innerHTML = current;
+                //current=current === 'O'? 'X':'O';
+                /*currentBoardValues = Array.from(document.getElementsByClassName("block")).map(item => {
+                    return item.innerHTML;
+                })
+                BoardValues = {
+                    0: currentBoardValues.slice(0,10),
+                    1: currentBoardValues.slice(10,20),
+                    2: currentBoardValues.slice(20,30),
+                    3: currentBoardValues.slice(30,),
+                    4: currentBoardValues.slice(40,50),
+                    4: currentBoardValues.slice(50,60),
+                };*/
+                //var aDiv = document.createElement("div");
+                //document.body.appendChild(btn); 
+                //document.getElementsByClassName("container").appendChild(aDiv);
+
+                 // //###
+                // board_values[0][5] = '1';
+                // board_values[1][4] = object_block;
+                // board_values[1][5] = object_block;
+                // board_values[1][6] = object_block;
+                
+                gamePiece[0 + xCount][4] = '1';
+                gamePiece[1 + xCount][3] = '1';
+                gamePiece[1 + xCount][4] = '1';
+                gamePiece[1 + xCount][5] = '1';
+                xCount++;
+                yCount++;
+                
+                for (var i = 0; i < 10; i++) { 
+                  for (var j = 0; j < 10; j++) { 
+                    BoardValues[i][j] = gamePiece[i][j];
+                  } 
+                } 
+
+                var att = document.createAttribute("class");
+                att.value = "container";
+
+                var blockAtt = document.createAttribute("class");
+                blockAtt.value = "block";
+
+                var containerDiv = document.createElement("div");
+                containerDiv.setAttributeNode(att);
+                
+                var blockDiv = document.createElement("div");
+                blockDiv.setAttributeNode(blockAtt);
+              
+                for (var i = 0; i < gfg.length; i++) { 
+                  gfg[i] = []; 
+                }
+                
+                for (var i = 0; i < 10; i++) { 
+                    for (var j = 0; j < 10; j++) { 
+                      var sss = document.createElement("div"); 
+                      sss.innerHTML = BoardValues[i][j];
+                      
+                      var blockAtt = document.createAttribute("class");
+                      blockAtt.value = "block";
+                      sss.setAttributeNode(blockAtt);
+                      gfg[i][j] = sss;
+                    } 
+                } 
+
+                for(var row = 0; row < 10; row++) {
+                  for(var col = 0; col < 10; col++) {
+                    containerDiv.appendChild(gfg[row][col]);
+                  }
+                }
+
+                document.body.appendChild(containerDiv);    
+                  
+                var result = Module.tetris();
+                
+                /*if(result == 'X' || result == 'O') {
+                    disableBoard = true
+                    document.getElementById("game-status").innerHTML = `${result} Won!!!!`
+                } else {
+                    document.getElementById("game-status").innerHTML = result
+                }*/
+            }
+        }
+        
+        // Reset Game function
+        function resetGame() {
+            disableBoard = false
+           location.reload()
+        }
+        // Reset Game function
+        function moveObject() {
+          makeMove();
+        }
+        
+      </script>
+      <script src="main.js"></script>
+</body>
+</html>
