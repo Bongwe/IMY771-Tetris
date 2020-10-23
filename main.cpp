@@ -34,14 +34,12 @@ bool generateTetrimino() {
 val tetris() {
     printf("MyFunction Called\n");
     val board_values = val::global("BoardValues");
-    val no_winner_label = val::global("noWinnerLabel");
     val empty_block = val::global("emptyBlock");
     val object_block = val::global("objectBlock");
 
     val collapse_board = val::global("collapseBoardLabel");
     val generate_piece = val::global("generatePieceLabel");
     val game_over = val::global("gameOverLabel");
-    return no_winner_label;
 
     if (isCompleteLine(board_values, object_block)) {
        return collapse_board;

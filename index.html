@@ -93,7 +93,6 @@
         var BoardValues = new Array(10);
         var emptyBlock = '';
         var objectBlock = "1";
-        var gfg = Array(10);
         var generateObject = true;
         
         for (var i = 0; i < 5; i++) { 
@@ -134,11 +133,11 @@
 
         function makeMove() {
           if (generateObject){
-            gamePiece = generateAnewGameObject();
+            gamePiece = this.generateANewGameObject();
             generateObject = false;
           }
          
-          moveGameObject(xCount, generateObject);
+          this.moveGameObject(xCount, gamePiece);
           
           for (var i = 0; i < 5; i++) { 
             for (var j = 0; j < 10; j++) { 
@@ -155,17 +154,17 @@
           var result = Module.tetris();
 
           if (result === 'collapseBoard') {
-            BoardValues = copyBoardFromSecondLastRow(BoardValues);
+            BoardValues = this.copyBoardFromSecondLastRow(BoardValues);
           }
           if (result === 'generatePiece') {
             generateObject = true;
           }
           if (result === 'gameOver') {
-            stopGame();
+            this.stopGame();
           }
         }
 
-        function moveGameObjectgameObject(xCount, gameObject) {
+        function moveGameObject (xCount, gameObject) {
           if (xCount < 20){
             xCount++;
           }
@@ -196,7 +195,7 @@
         }
 
         function initialiseBaord() {
-          var newBoard = newArray(20);
+          var newBoard = new Array(20);
 
           for (var i = 0; i < newBoard.length; i++) { 
             newBoard[i] = new Array(10);
