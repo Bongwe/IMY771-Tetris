@@ -2613,6 +2613,18 @@ var ASM_CONSTS = {
     }
 
 
+  function requireHandle(handle) {
+      if (!handle) {
+          throwBindingError('Cannot use deleted val. handle = ' + handle);
+      }
+      return emval_handle_array[handle].value;
+    }
+  function __emval_equals(first, second) {
+      first = requireHandle(first);
+      second = requireHandle(second);
+      return first == second;
+    }
+
   var emval_symbols={};
   function getStringOrSymbol(address) {
       var symbol = emval_symbols[address];
@@ -2640,10 +2652,29 @@ var ASM_CONSTS = {
       }
     }
 
+  function __emval_get_property(handle, key) {
+      handle = requireHandle(handle);
+      key = requireHandle(key);
+      return __emval_register(handle[key]);
+    }
+
   function __emval_incref(handle) {
       if (handle > 4) {
           emval_handle_array[handle].refcount += 1;
       }
+    }
+
+  function requireRegisteredType(rawType, humanName) {
+      var impl = registeredTypes[rawType];
+      if (undefined === impl) {
+          throwBindingError(humanName + " has unknown type " + getTypeName(rawType));
+      }
+      return impl;
+    }
+  function __emval_take_value(type, argv) {
+      type = requireRegisteredType(type, '_emval_take_value');
+      var v = type['readValueFromPointer'](argv);
+      return __emval_register(v);
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -2757,8 +2788,11 @@ var asmLibraryArg = {
   "_embind_register_std_wstring": __embind_register_std_wstring,
   "_embind_register_void": __embind_register_void,
   "_emval_decref": __emval_decref,
+  "_emval_equals": __emval_equals,
   "_emval_get_global": __emval_get_global,
+  "_emval_get_property": __emval_get_property,
   "_emval_incref": __emval_incref,
+  "_emval_take_value": __emval_take_value,
   "emscripten_memcpy_big": _emscripten_memcpy_big,
   "emscripten_resize_heap": _emscripten_resize_heap,
   "fd_write": _fd_write,

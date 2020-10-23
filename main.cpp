@@ -40,6 +40,7 @@ val tetris() {
     val collapse_board = val::global("collapseBoardLabel");
     val generate_piece = val::global("generatePieceLabel");
     val game_over = val::global("gameOverLabel");
+    val continueGameLabel = val::global("continueGameLabel");
 
     if (isCompleteLine(board_values, object_block)) {
        return collapse_board;
@@ -50,6 +51,7 @@ val tetris() {
     if (isGameOver(board_values, empty_block)) {
         return game_over;
     }
+    return continueGameLabel; 
 
 }
 
